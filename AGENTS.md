@@ -40,6 +40,8 @@ Ejemplos futuros:
 * Máscara Jaguar → Mayor velocidad.
 * Máscara Toro → Embestida que destruye obstáculos.
 * Máscara Cuervo → Detectar enemigos a través de paredes.
+* Mascara Conejo → Brincar muy alto
+
 
 ---
 

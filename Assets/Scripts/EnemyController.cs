@@ -13,6 +13,7 @@ public class EnemyController : MonoBehaviour
     private SpriteRenderer sprite;
     private Rigidbody2D rb;
     private int direction = 1;
+    private bool isAlert = true;
 
     void Awake()
     {
@@ -20,9 +21,14 @@ public class EnemyController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
+    public void SetAlert(bool alert)
+    {
+        isAlert = alert;
+    }
+
     void FixedUpdate()
     {
-        Patrol();
+        if (isAlert) Patrol();
     }
 
     void Patrol()

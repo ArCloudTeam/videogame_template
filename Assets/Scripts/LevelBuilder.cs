@@ -28,12 +28,16 @@ public class LevelBuilder : MonoBehaviour
 
     void BuildLevel()
     {
+        GameManager.Reset();
         SetupCamera();
         Transform player = CreatePlayer();
         if (camCtrl != null) camCtrl.target = player;
         CreateGround();
         CreatePlatforms();
         CreateEnemies();
+        CreateChest();
+        CreateGoal();
+        CreateUI();
     }
 
     void SetupCamera()
@@ -74,6 +78,8 @@ public class LevelBuilder : MonoBehaviour
         controller.groundCheck = check.transform;
 
         player.AddComponent<PlayerHealth>();
+
+        player.AddComponent<MaskController>();
 
         CreateAttackHitbox(player);
 
@@ -171,6 +177,70 @@ public class LevelBuilder : MonoBehaviour
         EnemyController eCtrl = enemy.AddComponent<EnemyController>();
         eCtrl.leftBound = leftBound;
         eCtrl.rightBound = rightBound;
+    }
+
+    void CreateGoal()
+    {
+        Vector3 pos = new Vector3(12f, -1.5f, 0f);
+
+        GameObject platform = new GameObject("GoalPlatform");
+        platform.transform.position = pos + new Vector3(0f, -0.25f, 0f);
+
+        SpriteRenderer pfSprite = platform.AddComponent<SpriteRenderer>();
+        pfSprite.sprite = CreateSolidSprite(32, 32, new Color(0.3f, 0.3f, 0.3f));
+        pfSprite.drawMode = SpriteDrawMode.Tiled;
+        pfSprite.size = new Vector2(3f, 0.5f);
+
+        BoxCollider2D pfCollider = platform.AddComponent<BoxCollider2D>();
+        pfCollider.size = new Vector2(3f, 0.5f);
+
+        GameObject goal = new GameObject("Goal");
+        goal.transform.position = pos;
+
+        SpriteRenderer sprite = goal.AddComponent<SpriteRenderer>();
+        sprite.sprite = CreateSolidSprite(24, 32, Color.green);
+        sprite.sortingLayerName = "Default";
+
+        BoxCollider2D trigger = goal.AddComponent<BoxCollider2D>();
+        trigger.size = new Vector2(1f, 1.5f);
+        trigger.isTrigger = true;
+
+        goal.AddComponent<GoalController>();
+    }
+
+    void CreateUI()
+    {
+        GameObject ui = new GameObject("GameUI");
+        ui.AddComponent<GameUI>();
+    }
+
+    void CreateChest()
+    {
+        Vector3 position = new Vector3(2f, -3.5f, 0f);
+
+        GameObject chest = new GameObject("Chest");
+        chest.transform.position = position;
+
+        SpriteRenderer sprite = chest.AddComponent<SpriteRenderer>();
+        sprite.sprite = CreateSolidSprite(24, 24, new Color(0.7f, 0.5f, 0.2f));
+        sprite.sortingLayerName = "Default";
+
+        BoxCollider2D trigger = chest.AddComponent<BoxCollider2D>();
+        trigger.size = new Vector2(2f, 2f);
+        trigger.isTrigger = true;
+        trigger.offset = new Vector2(0f, 0.5f);
+
+        GameObject maskIcon = new GameObject("MaskIcon");
+        maskIcon.transform.parent = chest.transform;
+        maskIcon.transform.localPosition = new Vector3(0f, 1f, 0f);
+
+        SpriteRenderer iconSprite = maskIcon.AddComponent<SpriteRenderer>();
+        iconSprite.sprite = CreateSolidSprite(16, 16, Color.magenta);
+        iconSprite.sortingLayerName = "Default";
+        iconSprite.color = new Color(1f, 0f, 1f, 0.8f);
+
+        ChestController chestCtrl = chest.AddComponent<ChestController>();
+        chestCtrl.maskIcon = maskIcon;
     }
 
     Sprite CreateSolidSprite(int width, int height, Color color)

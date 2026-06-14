@@ -10,6 +10,7 @@ public class PlayerHealth : MonoBehaviour
     private SpriteRenderer sprite;
     private float invulnerabilityTimer;
     private bool isInvulnerable;
+    private bool forceInvulnerable;
 
     void Awake()
     {
@@ -33,9 +34,14 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
+    public void SetInvulnerable(bool invulnerable)
+    {
+        forceInvulnerable = invulnerable;
+    }
+
     public void TakeDamage(int amount)
     {
-        if (isInvulnerable) return;
+        if (isInvulnerable || forceInvulnerable) return;
 
         currentHealth -= amount;
         isInvulnerable = true;
@@ -46,7 +52,6 @@ public class PlayerHealth : MonoBehaviour
 
     void Die()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(
-            UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+        GameManager.Lose();
     }
 }
