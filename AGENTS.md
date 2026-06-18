@@ -1,8 +1,8 @@
-# Project Masked Assassin
+# Project arcdteam.viva2026
 
 ## Concepto General
 
-Masked Assassin es un juego de acción 2D inspirado en Katana Zero.
+arcdteam.viva2026 es un juego de acción 2D inspirado en Katana Zero.
 
 El jugador controla a un asesino que debe infiltrarse en diferentes escenarios eliminando enemigos y superando obstáculos.
 
